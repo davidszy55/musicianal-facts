@@ -1,0 +1,36 @@
+.active {
+  background-color: rgb(180, 140, 140);
+  font-weight: bold;
+}
+.nav-container {
+  background-color: rgb(215, 175, 175);
+  display: inline-block;
+  box-shadow: 15px 5px 15px 5px;
+}
+.nav-item .navbar-nav {
+  display: inline-block;
+  margin: 0 auto
+}
+.nav-link {
+  font-family: "Helvetica", sans-serif;
+}
+.nav-link:hover {
+  background-color: rgb(240, 200, 200);
+}
+.navbar {
+  display: inline-block;
+}
+.slide-right {
+  overflow: hidden;
+}
+.slide-right * {
+  animation: 0.5s slide-right 0.25s forwards;
+  transform: translateX(-100%);
+  opacity: 0%;
+}
+@keyframes slide-right {
+  to {
+    transform: translateX(0);
+    opacity: 100%;
+  }
+}

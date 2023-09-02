@@ -1,0 +1,49 @@
+@media only screen and (max-width: 800px) {
+
+}
+body {
+    background-color: rgb(210, 235, 210);
+}
+.label-font {
+    font-family: "Helvetica", sans-serif;
+}
+#can {
+    aspect-ratio: 1;
+    background-image: url("/images/can.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: 1px solid red;
+    min-width: 700px;
+    min-height: 700px;
+    max-width: 1200px;
+    max-height: 1200px;
+}
+#label {
+    background-color: white;
+    min-width: 500px;
+    min-height: 800px;
+    max-width: 1200px;
+    max-height: 1200px;
+}
+#label-border {
+ border: 5px solid black;
+}
+#label-title {
+    font-family: "Helvetica", sans-serif;
+    font-size: 4em;
+}
+#h-line {
+    border: 1px solid grey;
+}
+#h-line-medium {
+    border: 4px solid black;
+}
+#h-line-thick {
+    border: 10px solid black;
+}
+#serving-per {
+    font-family: 'Helvetica Light', sans-serif;
+}
+#time-range {
+    font-family: 'Helvetica Heavy', sans-serif;
+}

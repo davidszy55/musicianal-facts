@@ -1,0 +1,77 @@
+body {
+  background-color: rgb(210, 235, 210);
+}
+.h-line {
+  border: 1px solid grey;
+}
+.h-line-thick {
+  border: 10px solid black;
+}
+.label-border {
+  border: 5px solid black;
+}
+.label-font {
+  font-family: "Helvetica", sans-serif;
+}
+.label-font-heavy {
+   font-family: 'Helvetica Heavy', sans-serif;
+ }
+.label-font-light {
+    font-family: 'Helvetica Light', sans-serif;
+  }
+.label-title {
+  font-family: "Helvetica", sans-serif;
+  font-size: 4em;
+}
+.lastfm-buttons > mat-button-toggle {
+  background-color: rgb(213, 16, 7)!important;
+}
+.lastfm-buttons > .mat-button-toggle-checked {
+  background-color: rgb(140, 0, 0)!important;
+}
+.spotify-buttons > .mat-button-toggle-checked {
+  background-color: green!important;
+}
+#apple-button {
+  background-color: #f94c57!important;
+}
+#lastfm-button {
+  background-color: #D51007!important;
+}
+#spotify-button {
+  background-color: #1DB954!important;
+}
+#can {
+  aspect-ratio: 1;
+  background-image: url("/images/can.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  min-width: 700px;
+  min-height: 700px;
+  max-width: 1200px;
+  max-height: 1200px;
+}
+#h-line-medium {
+   border: 4px solid black;
+}
+#label {
+  background-color: white;
+  min-width: 500px;
+  min-height: 800px;
+  max-width: 1200px;
+  max-height: 1200px;
+}
+#label-short {
+  background-color: white;
+  height: auto;
+  min-width: 500px;
+  min-height: 700px;
+  max-width: 1200px;
+  max-height: 1200px;
+}
+#spotify-sm {
+  background-color: #1DB954;
+  border: 1px solid #1DB954;
+}
+
+
