@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ProxyService } from "../proxy.service";
 
 @Component({
   selector: 'app-home',
@@ -6,6 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+
+  constructor(
+    private proxyService: ProxyService
+  ) {}
+
   days: Array<string> = [
     "Sunday",
     "Monday",
@@ -30,10 +36,8 @@ export class HomeComponent {
     "December"
   ];
 
-  constructor() { }
-
   ready: boolean = false;
-  isLoading: boolean = true;
+  isLoading: boolean = false;
 
   today: Date = new Date();
   month: string = this.months[this.today.getMonth()];
@@ -46,13 +50,19 @@ export class HomeComponent {
   lastfmSelected: string = "month";
   spotifySelected: string = "medium";
 
-  appleButtonPress() {};
+  appleButtonPress(): void {
+    this.isLoading = true;
+  };
 
-  lastfmButtonPress() {};
+  lastfmButtonPress(): void {
+    this.isLoading = true;
+  };
 
-  spotifyButtonPress() {};
+  spotifyButtonPress(): void {
+    this.isLoading = true;
+  };
 
-  getSuffix(num: string) {
+  getSuffix(num: string): string {
     const _ = ["1", "2", "3"]
     const suffix: {[key: string]: string} = {
       "1": "st",
@@ -62,5 +72,4 @@ export class HomeComponent {
 
     return (num in _) ? suffix[num as string] : "th";
   };
-
 }
