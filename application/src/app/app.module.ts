@@ -3,6 +3,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from "@angular/common";
+import { HttpClientModule } from "@angular/common/http";
 import { MatButtonModule } from "@angular/material/button";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatInputModule } from "@angular/material/input";
@@ -19,6 +20,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { PrivacyComponent } from './privacy/privacy.component';
 
 import { ProxyService } from "./proxy.service";
+import { SpotifyComponent } from './spotify/spotify.component';
 
 @NgModule({
   declarations: [
@@ -27,13 +29,15 @@ import { ProxyService } from "./proxy.service";
     AboutComponent,
     PrivacyComponent,
     ContactComponent,
-    HomeComponent
+    HomeComponent,
+    SpotifyComponent
   ],
   imports: [
     AppRoutingModule,
     CommonModule,
     BrowserModule,
     RouterModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatRippleModule,

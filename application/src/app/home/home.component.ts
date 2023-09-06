@@ -1,16 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProxyService } from "../proxy.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
   constructor(
-    private proxyService: ProxyService
-  ) {}
+    private proxyService: ProxyService,
+    private router: Router
+  ) {};
+
+  ngOnInit() {
+    let currentURL = this.router.url;
+    currentURL.includes("?") && this.proxyService.spotifyLoginCallback();
+  };
 
   days: Array<string> = [
     "Sunday",
@@ -59,7 +66,13 @@ export class HomeComponent {
   };
 
   spotifyButtonPress(): void {
+    console.log("Inside spotifyButtonPress()");
     this.isLoading = true;
+    // this.proxyService.spotifyAuthRequest()
+      // .then((res: any) => {
+      //   console.log("SPOTIFY RESULT: ");
+      //   console.log(res);
+      // });
   };
 
   getSuffix(num: string): string {

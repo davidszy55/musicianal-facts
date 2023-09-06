@@ -1,7 +1,6 @@
 @import "../node_modules/@angular/material/prebuilt-themes/indigo-pink.css";
 @import "../node_modules/font-awesome/css/font-awesome.css";
 
-
 body {
   background-color: rgb(210, 200, 200);
 }

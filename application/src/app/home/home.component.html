@@ -31,12 +31,14 @@
             <div class="mx-2 my-2 h-line-thick"></div>
             <div class="h-75 pb-5 d-flex flex-column justify-content-around">
               <button class="h-50 w-50 my-3 mx-auto text-white" mat-raised-button id="apple-button" (click)="appleButtonPress()">
-                <i class="mr-auto fa fa-apple fa-3x"></i>
+                <i class="mr-auto fab fa-apple fa-3x"></i>
                 <span class="ms-2 h1">Music</span>
               </button>
               <button class="h-50 w-50 mt-3 mx-auto text-white" mat-raised-button id="spotify-button" (click)="spotifyButtonPress()">
-                <i class="mr-auto fa fa-spotify fa-3x"></i>
-                <span class="ms-2 h1">Spotify</span>
+                <a href="http://localhost:8080/spotify/login" style="text-decoration: none; color: inherit;">
+                  <i class="mr-auto fab fa-spotify fa-3x"></i>
+                  <span class="ms-2 h1">Spotify</span>
+                </a>
               </button>
               <mat-form-field class="w-50 mx-auto">
                 <mat-label>Select an option</mat-label>
@@ -48,7 +50,7 @@
               </mat-form-field>
               <button class="h-50 w-50 mx-auto text-white" mat-raised-button id="lastfm-button" (click)="lastfmButtonPress()">
                 <span class="fw-bold" style="font-family: Raleway, serif; font-size: 2.75em;">l</span>
-                <i class="mr-auto fa fa-lastfm fa-3x"></i>
+                <i class="mr-auto fab fa-lastfm fa-3x"></i>
                 <span class="fw-bold" style="font-family: Raleway, serif; font-size: 2.75em;">t.fm</span>
               </button>
               <mat-form-field class="w-50 mx-auto">
