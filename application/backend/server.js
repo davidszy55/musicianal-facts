@@ -2,13 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const onFinished = require("on-finished");
-const { request } = require("request");
-const { stringify } = require("querystring");
-
-const distDir =  __dirname + "/../dist/application/";
-const REDIRECT_URI = 'http://localhost:4200';
-const SPOTIFY_AUTH_STATE_KEY = "spotify_auth_state";
+let SpotifyWebApi = require("spotify-web-api-node");
 
 const app = express();
 app.use(bodyParser.json())
@@ -22,8 +16,7 @@ const server = app.listen(process.env.PORT || 8080, function() {
 // FUNCTIONS
 let generateRandomString = function (length) {
   let text = "";
-  let possible =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
   for (let i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -31,68 +24,130 @@ let generateRandomString = function (length) {
   return text;
 };
 
-// SPOTIFY
-const clientID = "5fa6e9839828408c8227c729454e8172";
+// ############################################################
+// ######                   SPOTIFY                      ######
+// ############################################################
+
+const clientId = "5fa6e9839828408c8227c729454e8172";
 const clientSecret = "1e93748a24554f9586060bbe603b4915";
+const REDIRECT_URI = 'http://localhost:4200';
+const SCOPES = ["user-read-private", "user-read-email", "user-top-read"];
+let state = generateRandomString(16);
+let spotifyApi;
+spotifyApi = new SpotifyWebApi({
+  clientId: clientId,
+  clientSecret: clientSecret,
+  redirectUri: REDIRECT_URI
+});
+let authorizeURL = spotifyApi.createAuthorizeURL(
+    SCOPES,
+    state,
+    false,
+    "code"
+);
 
 // Request authorization from user
-app.get("/spotify/login", (req, res, next) => {
-  let state = generateRandomString(16);
-  let scope = "user-read-private user-read-email user-top-read";
-  res.cookie(SPOTIFY_AUTH_STATE_KEY, state);
-  console.log("Inside /spotify/login");
-  console.log("State: ");
-  console.log(state);
+app.get("/spotify/login", (req, res) => {
+  console.log("Inside Spotify Login");
+  res.redirect(authorizeURL);
+});
 
-  res.redirect('https://accounts.spotify.com/authorize?' +
-    stringify({
-      response_type: 'code',
-      client_id: clientID,
-      scope: scope,
-      redirect_uri: REDIRECT_URI,
-      state: state
-    })
-  );
+app.get("/spotify/top/:type/:timeRange/:quantity?", async (req, res) => {
+  let type = req.params.type;
+  let timeRange = req.params["timeRange"];
+  let quantity = (req.params["quantity"]) ? req.params["quantity"] : null;
+
+  if (type === "tracks") {
+      spotifyGetTopTracks(timeRange, quantity);
+  }
+  if (type === "artists") {
+      let [topArtists, username] = await Promise.all([spotifyGetTopArtists(timeRange, quantity), spotifyGetUsername()]);
+      topArtists["username"] = username["body"]["display_name"];
+      res.send(topArtists);
+  }
+  if (type === "genres") {
+      spotifyGetTopTracks(timeRange, 10, true);
+  }
+  if (type === "albums") {
+      spotifyGetTopTracks(timeRange, 10, false, true)
+  }
 });
 
 // After the application requests Spotify authorization from the user, this function is called
-// The callback route is set in the REDIRECT_URI variable and in the Spotify Web API dashboard
-app.get("/callback", (req, res) => {
-  let code = req.query.code || null;
-  let state = req.query.state || null;
-  let authState = req.cookies ? req.cookies[SPOTIFY_AUTH_STATE_KEY] : null;
-  console.log("Now calling next() instructions");
+// to retrieve the access and refresh tokens
+app.get("/callback/:code", (req) => {
+    let code = req.params.code;
+  spotifyApi.authorizationCodeGrant(code).then(
+    function(data) {
+      console.log("Token received");
+      console.log("The token expires in " + data.body["expires_in"]);
+      console.log("The access token is " + data.body["access_token"]);
+      console.log("The refresh token is " + data.body["refresh_token"]);
 
-  if (!state || state !== authState) {
-    res.redirect("/#" + stringify({error: "state_mismatch"}));
-  } else {
-    res.clearCookie(SPOTIFY_AUTH_STATE_KEY);
-    let authOptions = {
-      url: "https://accounts.spotify.com/api/token",
-      form: {
-        code: code,
-        redirect_uri: REDIRECT_URI,
-        grant_type: "authorization_code"
-      },
-      headers: {
-        Authorization: "Basic " + new Buffer(`${clientID}:${clientSecret}`).toString("base64"),
-      },
-      json: true,
+      spotifyApi.setAccessToken(data.body["access_token"]);
+      spotifyApi.setRefreshToken(data.body["refresh_token"]);
+      setInterval(refreshSpotifyToken, 1000 * 59 * 59);
+    },
+      function(err) {
+        console.log("An error occurred in the callback.", err);
+      }
+  );
+})
+
+function refreshSpotifyToken() {
+    spotifyApi.refreshAccessToken().then(
+        function(data) {
+            console.log("Access token has been refreshed.");
+            spotifyApi.setAccessToken(data.body["access_token"]);
+        },
+        function(err) {
+            console.log("Could not refresh access token.", err);
+        }
+    );
+}
+
+function spotifyGetTopArtists(timeRange, quantity) {
+    let topArtists;
+    let results = {};
+    let options = {
+        time_range: timeRange,
+        limit: quantity,
+        offset: 0
     };
 
-    request.post(authOptions, (err, response, body) => {
-      if (!err && response.statusCode === 200) {
-        let accessToken = body["accessToken"];
-        let refreshToken = body["refreshToken"];
-
-        res.redirect("/#" + stringify({
-          client: "spotify",
-          access_token: accessToken,
-          refresh_token: refreshToken,
-        }));
-      } else {
-        res.send("There was an error during authentication.");
-      }
+    return new Promise((resolve) => {
+        spotifyApi.getMyTopArtists(options)
+            .then(function(data) {
+                topArtists = data.body.items;
+                topArtists.forEach((artist) => {
+                    results[artist.name] = {
+                        name: artist.name,
+                        popularity: artist.popularity,
+                        genres: artist.genres,
+                        uri: artist.uri,
+                        id: artist.id,
+                        url: artist["external_urls"].spotify
+                    };
+                });
+                resolve(results);
+            }, function(err) {
+                console.log("An error occurred in spotifyGetTopArtists.", err);
+            });
     });
-  }
-})
+}
+
+function spotifyGetTopTracks(timeRange, quantity, isGenre = false, isAlbums = false) {
+
+}
+
+function spotifyGetUsername() {
+  return new Promise((resolve) => {
+    spotifyApi.getMe()
+      .then(function(data) {
+        resolve(data);
+      }, function(err) {
+        console.log("An error occurred getting the authorized user's profile.", err);
+        }
+      );
+  });
+}

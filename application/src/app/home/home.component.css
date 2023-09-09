@@ -4,6 +4,9 @@ body {
 .h-line {
   border: 1px solid grey;
 }
+.h-line-medium {
+  border: 4px solid black;
+}
 .h-line-thick {
   border: 10px solid black;
 }
@@ -21,13 +24,20 @@ body {
   }
 .label-title {
   font-family: "Helvetica", sans-serif;
-  font-size: 4em;
+  font-size: 3.5em;
 }
 .lastfm-buttons > mat-button-toggle {
   background-color: rgb(213, 16, 7)!important;
 }
 .lastfm-buttons > .mat-button-toggle-checked {
   background-color: rgb(140, 0, 0)!important;
+}
+.mat-button-toggle-checked {
+  color: white!important;
+  background-color: #1DB954!important;
+}
+.mat-button-toggle:hover {
+  background-color: rgb(170, 220, 190)!important;
 }
 .mat-mdc-progress-spinner {
   --mdc-circular-progress-active-indicator-color: black!important;
@@ -44,6 +54,15 @@ body {
 #spotify-button {
   background-color: #1DB954!important;
 }
+#calculate-spotify {
+  border: 2px solid black;
+  height: 15%;
+  font-size: 1.7em;
+}
+#calculate-spotify:hover {
+  background-color: black!important;
+  color: white!important;
+}
 #can {
   aspect-ratio: 1;
   background-image: url("/images/can.png");
@@ -54,12 +73,9 @@ body {
   max-width: 1200px;
   max-height: 1200px;
 }
-#h-line-medium {
-   border: 4px solid black;
-}
 #label {
   background-color: white;
-  min-width: 500px;
+  min-width: 475px;
   min-height: 800px;
   max-width: 1200px;
   max-height: 1200px;
@@ -67,10 +83,14 @@ body {
 #label-short {
   background-color: white;
   height: auto;
-  min-width: 500px;
-  min-height: 700px;
+  min-width: 475px;
+  min-height: 775px;
   max-width: 1200px;
   max-height: 1200px;
+}
+#spotify-label {
+  background-color: white;
+  min-width: 475px;
 }
 #spotify-sm {
   background-color: #1DB954;

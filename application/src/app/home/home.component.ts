@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ProxyService } from "../proxy.service";
-import { Router } from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {DataService} from "../data.service";
+import {ProxyService} from "../proxy.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -10,13 +11,41 @@ import { Router } from "@angular/router";
 export class HomeComponent implements OnInit {
 
   constructor(
+    private dataService: DataService,
     private proxyService: ProxyService,
     private router: Router
-  ) {};
+  ) {
+    this.dataService.musicServiceSelectionChange.subscribe((): void => {
+      this.appleIsSelected = false;
+      this.lastfmIsSelected = false;
+      this.spotifyIsSelected = false;
+    });
+  };
 
   ngOnInit() {
-    let currentURL = this.router.url;
-    currentURL.includes("?") && this.proxyService.spotifyLoginCallback();
+    let currentURL: string = this.router.url;
+    this.ready = false;
+    this.username = "";
+
+    if (!currentURL.includes("?")) {
+      this.appleIsSelected = false;
+      this.lastfmIsSelected = false;
+      this.spotifyIsSelected = false;
+    } else {
+      let query: {[key: string]: string} = {};
+      let queryArray: any = currentURL.substring(currentURL.indexOf("?") + 1).split("&");
+
+      queryArray.forEach((item: string): void => {
+        query[item.split("=")[0]] = item.split("=")[1];
+      });
+
+      if ("code" in query && "state" in query) {
+        this.spotifyIsSelected = true;
+        this.proxyService.spotifyLoginCallback(query["code"]).then((res: any): void => {
+          console.log(res);
+        });
+      }
+    }
   };
 
   days: Array<string> = [
@@ -43,9 +72,6 @@ export class HomeComponent implements OnInit {
     "December"
   ];
 
-  ready: boolean = false;
-  isLoading: boolean = false;
-
   today: Date = new Date();
   month: string = this.months[this.today.getMonth()];
   year: number = this.today.getFullYear();
@@ -54,35 +80,89 @@ export class HomeComponent implements OnInit {
   suffix: string = this.getSuffix(this.date.charAt(this.date.length - 1));
   dateString: string = `${this.day}, ${this.month} ${this.date}${this.suffix}, ${this.year}`;
 
-  lastfmSelected: string = "month";
-  spotifySelected: string = "medium";
+  appleIsSelected: boolean = false;
+  lastfmIsSelected: boolean = false;
+  spotifyIsSelected: boolean = false;
+
+  selectedType: string = "tracks";
+  selectedTimeRange: string = "short_term";
+  selectedQuantity: string = "10";
+
+  response: any = [];
+  ready: boolean = false;
+  username: string = "";
 
   appleButtonPress(): void {
-    this.isLoading = true;
+    this.appleIsSelected = true;
+    this.response = [];
   };
 
   lastfmButtonPress(): void {
-    this.isLoading = true;
+    this.lastfmIsSelected = true;
+    this.response = [];
   };
 
   spotifyButtonPress(): void {
-    console.log("Inside spotifyButtonPress()");
-    this.isLoading = true;
-    // this.proxyService.spotifyAuthRequest()
-      // .then((res: any) => {
-      //   console.log("SPOTIFY RESULT: ");
-      //   console.log(res);
-      // });
+    this.spotifyIsSelected = true;
+    this.response = [];
   };
 
   getSuffix(num: string): string {
-    const _ = ["1", "2", "3"]
+    const _: string[] = ["1", "2", "3"]
     const suffix: {[key: string]: string} = {
       "1": "st",
       "2": "nd",
       "3": "rd"
     };
-
     return (num in _) ? suffix[num as string] : "th";
+  };
+
+  sendSpotifyRequest(): void {
+    if (this.selectedType == "genres" || this.selectedType == "albums") this.selectedQuantity = "";
+    this.proxyService.sendSpotifyRequest(this.selectedType, this.selectedTimeRange, this.selectedQuantity).then((res: any): void => {
+      let tmp: any[] = [];
+      tmp.push(Object.keys(res).length.toString());
+      tmp.push(res["username"]);
+
+      if (this.selectedType == "tracks") {
+        tmp.push("songs");
+      } else tmp.push(this.selectedType);
+
+      if (this.selectedTimeRange == "short_term") {
+        tmp.push("Month");
+      } else if (this.selectedTimeRange == "medium_term") {
+        tmp.push("6 Months");
+      } else if (this.selectedTimeRange == "long_term") {
+        tmp.push("All Time");
+      }
+
+      this.response.push(tmp);
+
+      for (const key in res) {
+        tmp = [];
+
+        if (key == "username") continue;
+
+        for (const key2 in res[key.toString()]) {
+          tmp.push(res[key.toString()][key2.toString()]);
+        }
+        this.response.push(tmp);
+      }
+      this.ready = true;
+      console.log("Response: ");
+      console.log(this.response);
+    });
+  };
+
+  setTimeRange(timeRange: string): void {
+    this.selectedTimeRange = timeRange;
+  };
+
+  setQuantity(quantity: string): void {
+    this.selectedQuantity = quantity;
+  };
+
+  setType(type: string): void {
+    this.selectedType = type;
   };
 }

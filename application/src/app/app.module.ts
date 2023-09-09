@@ -18,9 +18,10 @@ import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { PrivacyComponent } from './privacy/privacy.component';
-
-import { ProxyService } from "./proxy.service";
 import { SpotifyComponent } from './spotify/spotify.component';
+
+import { DataService } from "./data.service";
+import { ProxyService } from "./proxy.service";
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { SpotifyComponent } from './spotify/spotify.component';
     MatProgressSpinnerModule
   ],
   providers: [
+    DataService,
     ProxyService
   ],
   bootstrap: [AppComponent]

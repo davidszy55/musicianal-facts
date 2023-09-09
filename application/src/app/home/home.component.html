@@ -1,73 +1,134 @@
 <div class="container w-100">
   <div class="col-sm w-100 m-0 p-0">
-    <div class="row mx-auto mt-5 p-2 w-50" id="{{ ready ? 'label' : 'label-short' }}">
-      <div class="label-border" *ngIf="ready; else selectPlatform">
-        <div class="w-100 text-center fw-bold label-title">Musition Facts</div>
+    <div *ngIf="!appleIsSelected && !lastfmIsSelected && !spotifyIsSelected; else selectStats" class="row mx-auto mt-5 p-2 w-50" id="{{ ready ? 'label' : 'label-short' }}">
+      <div class="label-border">
+        <div class="w-100 text-center fw-bolder label-title">Musition Facts</div>
         <div class="mx-2 mb-2 h-line"></div>
-        <div class="w-100 my-0 mx-2 h4 label-font-light">10 servings per list</div>
-        <div class="d-flex justify-content-between">
-          <span class="mx-2 float-left fw-bold h4">Serving size</span>
-          <span class="mr-2 float-right fw-bold h4">1 song (55g)</span>
-        </div>
+        <div class="w-100 my-0 mx-2 h4 label-font-light">Take a look at your top songs and artists</div>
+        <span class="mx-2 float-left fw-bold h4">Choose your music streaming platform</span>
         <div class="mx-2 my-2 h-line-thick"></div>
-        <div class="w-100 mx-2 fw-bold h4">Your top songs of the last:</div>
-        <div class="w-100 mx-2 d-flex justify-content-between">
-          <span class="w-25 h1 float-left fw-bold label-font-heavy">Month</span>
-          <span class="h5 me-3 py-2 mt-2 float-right fw-bold" id="date">{{ dateString }}</span>
-        </div>
-        <div class="mx-2" id="h-line-medium"></div>
-        <div class="me-2 my-2 d-flex justify-content-end h5 fw-bold label-font">% Daily Value *</div>
-      </div>
-      <ng-template #selectPlatform>
-        <div class="label-border">
-          <div class="w-100 text-center fw-bolder label-title">Musition Facts</div>
-          <div class="mx-2 mb-2 h-line"></div>
-          <div class="w-100 h-75 d-flex align-items-center" *ngIf="isLoading; else select">
-            <mat-spinner class="w-25 mx-auto"></mat-spinner>
+        <div class="w-100 mt-5 d-flex flex-column justify-content-between" style="min-height: 400px;">
+          <div class="mx-auto w-50">
+            <button class="text-white py-5 w-100" mat-raised-button id="apple-button" (click)="appleButtonPress()">
+              <i class="mr-auto fab fa-apple fa-3x"></i>
+              <span class="ms-2 h1">Music</span>
+            </button>
           </div>
-          <ng-template #select>
-            <div class="w-100 my-0 mx-2 h4 label-font-light">Take a look at your top songs and artists</div>
-            <span class="mx-2 float-left fw-bold h4">Choose your music streaming platform</span>
-            <div class="mx-2 my-2 h-line-thick"></div>
-            <div class="h-75 pb-5 d-flex flex-column justify-content-around">
-              <button class="h-50 w-50 my-3 mx-auto text-white" mat-raised-button id="apple-button" (click)="appleButtonPress()">
-                <i class="mr-auto fab fa-apple fa-3x"></i>
-                <span class="ms-2 h1">Music</span>
-              </button>
-              <button class="h-50 w-50 mt-3 mx-auto text-white" mat-raised-button id="spotify-button" (click)="spotifyButtonPress()">
-                <a href="http://localhost:8080/spotify/login" style="text-decoration: none; color: inherit;">
-                  <i class="mr-auto fab fa-spotify fa-3x"></i>
-                  <span class="ms-2 h1">Spotify</span>
-                </a>
-              </button>
-              <mat-form-field class="w-50 mx-auto">
-                <mat-label>Select an option</mat-label>
-                <mat-select [(value)]="spotifySelected">
-                  <mat-option value="short">Last Week</mat-option>
-                  <mat-option value="medium">Last Month</mat-option>
-                  <mat-option value="long">All Time</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <button class="h-50 w-50 mx-auto text-white" mat-raised-button id="lastfm-button" (click)="lastfmButtonPress()">
-                <span class="fw-bold" style="font-family: Raleway, serif; font-size: 2.75em;">l</span>
-                <i class="mr-auto fab fa-lastfm fa-3x"></i>
-                <span class="fw-bold" style="font-family: Raleway, serif; font-size: 2.75em;">t.fm</span>
-              </button>
-              <mat-form-field class="w-50 mx-auto">
-                <mat-label>Select an option</mat-label>
-                <mat-select [(value)]="lastfmSelected">
-                  <mat-option value="week">Last Week</mat-option>
-                  <mat-option value="month">Last Month</mat-option>
-                  <mat-option value="3-months">Last 3 Months</mat-option>
-                  <mat-option value="6-months">Last 6 Months</mat-option>
-                  <mat-option value="year">Last Year</mat-option>
-                  <mat-option value="all-time">All Time</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </ng-template>
+          <div class="mx-auto w-50">
+            <button class="w-100 text-white py-5 w-100" mat-raised-button id="spotify-button" (click)="spotifyButtonPress()">
+              <a href="http://localhost:8080/spotify/login" style="text-decoration: none; color: inherit;">
+                <i class="mr-auto fab fa-spotify fa-3x"></i>
+                <span class="ms-2 h1">Spotify</span>
+              </a>
+            </button>
+          </div>
+          <div class="mx-auto w-50">
+            <button class="text-white py-5 w-100" mat-raised-button id="lastfm-button" (click)="lastfmButtonPress()">
+              <span class="fw-bold" style="font-family: Raleway, serif; font-size: 2.75em;">l</span>
+              <i class="mr-auto fab fa-lastfm" style="font-size: 3.4em; transform: translateY(0.1em)"></i>
+              <span class="fw-bold" style="font-family: Raleway, serif; font-size: 2.75em;">t.fm</span>
+            </button>
+          </div>
         </div>
-      </ng-template>
+      </div>
     </div>
+    <ng-template #selectStats>
+      <ng-container *ngIf="!ready; else results">
+        <ng-container *ngIf="spotifyIsSelected">
+          <div class="row mx-auto mt-5 p-2 w-50" id="label-short">
+            <div class="label-border">
+              <div class="w-100 text-center fw-bolder label-title">Musition Facts</div>
+              <div class="mx-2 mb-2 h-line"></div>
+              <div class="w-100 my-0 mx-2 h4 label-font-light">Learn more about your Spotify activity</div>
+              <span class="mx-2 float-left fw-bold h1">Choose your stats</span>
+              <div class="mx-2 my-2 h-line-thick"></div>
+              <div class="w-100 mx-2 mt-3 h5 label-font-light">
+                Show your top...
+              </div>
+              <mat-button-toggle-group class="mx-2 mt-2 mb-4 d-flex justify-content-center" [value]="selectedType">
+                <mat-button-toggle class="w-100 px-auto" value="tracks" (click)="setType('tracks')">Songs</mat-button-toggle>
+                <mat-button-toggle class="w-100 px-auto" value="artists" (click)="setType('artists')">Artists</mat-button-toggle>
+                <mat-button-toggle class="w-100 px-auto" value="genres" (click)="setType('genres')">Genres</mat-button-toggle>
+                <mat-button-toggle class="w-100 px-auto" value="albums" (click)="setType('albums')">Albums</mat-button-toggle>
+              </mat-button-toggle-group>
+              <div class="w-100 mx-2 mt-3 h5 label-font-light">
+                ...over the last...
+              </div>
+              <mat-button-toggle-group class="mx-2 mt-2 mb-4 d-flex justify-content-center" [value]="selectedTimeRange">
+                <mat-button-toggle class="w-100 px-auto" value="short_term" (click)="setTimeRange('short_term')">Month</mat-button-toggle>
+                <mat-button-toggle class="w-100 px-auto" value="medium_term" (click)="setTimeRange('medium_term')">6 Months</mat-button-toggle>
+                <mat-button-toggle class="w-100 px-auto" value="long_term" (click)="setTimeRange('long_term')">All Time</mat-button-toggle>
+              </mat-button-toggle-group>
+              <div *ngIf="selectedType=='tracks' || selectedType=='artists'">
+                <div class="w-100 mx-2 mt-3 h5 label-font-light">
+                  ...limited to the...
+                </div>
+                <mat-button-toggle-group class="mx-2 mt-2 mb-4 d-flex justify-content-center" [value]="selectedQuantity">
+                  <mat-button-toggle class="w-100 px-auto" value="10" (click)="setQuantity('10')">Top 10</mat-button-toggle>
+                  <mat-button-toggle class="w-100 px-auto" value="25" (click)="setQuantity('25')">Top 25</mat-button-toggle>
+                  <mat-button-toggle class="w-100 px-auto" value="50" (click)="setQuantity('50')">Top 50</mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+              <div class="px-2">
+                <button class="py-4 w-100 bg-white btn btn-primary text-black fw-bold label-font" data-toggle="button" aria-pressed="false" id="calculate-spotify" (click)="sendSpotifyRequest()">
+                  Calculate my Musition Facts.
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="appleIsSelected">
+
+        </ng-container>
+        <ng-container *ngIf="lastfmIsSelected">
+
+        </ng-container>
+      </ng-container>
+    </ng-template>
+    <ng-template #results>
+      <ng-container *ngIf="spotifyIsSelected">
+        <div class="row mx-auto mt-5 p-2 w-50" id="spotify-label">
+          <div class="label-border">
+            <div class="w-100 text-center fw-bold label-title">Musition Facts</div>
+            <div class="mx-2 mb-2 h-line"></div>
+            <div class="w-100 my-0 mx-2 h4 label-font-light">{{ response.length - 1 }} servings per list</div>
+            <div class="d-flex justify-content-between">
+              <span class="mx-2 float-left fw-bold h4">Serving size</span>
+              <span class="mr-2 float-right fw-bold h4">1 {{ response[0][2].substring(0, response[0][2].length - 1) }} (55g)</span>
+            </div>
+            <div class="mx-2 my-2 h-line-thick"></div>
+            <div class="w-auto ms-2 d-inline-block fw-bold h4 float-start">{{ response[0][1] }}'{{ response[0][1][response[0][1].length - 1] == "s" ? "" : "s"}} top {{ response[0][2] }}&nbsp;</div>
+            <div class="d-flex flex-row justify-content-between">
+              <span class="fw-bold h4 float-start" *ngIf="selectedTimeRange =='long_term'; else shortMediumTerm"> of:</span>
+            </div>
+            <ng-template #shortMediumTerm>
+              <span class="fw-bold h4"> of the last:</span>
+            </ng-template>
+            <div class="w-100 mx-2 d-flex justify-content-between">
+              <span class="h1 float-left fw-bold label-font-heavy" style="width: 35%;">{{ response[0][3] }}</span>
+              <span class="h5 me-3 py-2 mt-2 float-right fw-bold" id="date">{{ dateString }}</span>
+            </div>
+            <div class="mx-2 h-line-medium" ></div>
+            <div class="me-2 my-2 d-flex justify-content-end h5 fw-bold label-font">% Daily Value *</div>
+            <div class="mx-2 mb-2 h-line"></div>
+            <div class="mx-2 label-font-heavy fw-bold h5" *ngFor="let item of response.slice(1); let i = index">
+              <a href="{{ item[5] }}" target="_blank" style="text-decoration: none; color: inherit;">{{ item[0] }}</a>
+              <div *ngIf="i < (response.length - 2)" class="mt-1 mb-2 h-line"></div>
+            </div>
+            <div class="mx-2 my-2 h-line-medium"></div>
+            <div class="mb-2 ms-2">
+              <i class="fab fa-spotify fa-2x"></i>
+              <span class="ms-2 h3 label-font fw-bold">Spotify</span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="appleIsSelected">
+
+      </ng-container>
+      <ng-container *ngIf="lastfmIsSelected">
+
+      </ng-container>
+    </ng-template>
   </div>
 </div>
