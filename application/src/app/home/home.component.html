@@ -1,29 +1,29 @@
-<div class="container w-100">
+<div class="container w-100 px-0">
   <div class="col-sm w-100 m-0 p-0">
     <div *ngIf="!appleIsSelected && !lastfmIsSelected && !spotifyIsSelected; else selectStats" class="row mx-auto mt-5 p-2 w-50" id="{{ ready ? 'label' : 'label-short' }}">
       <div class="label-border">
         <div class="w-100 text-center fw-bolder label-title">Musition Facts</div>
-        <div class="mx-2 mb-2 h-line"></div>
-        <div class="w-100 my-0 mx-2 h4 label-font-light">Take a look at your top songs and artists</div>
-        <span class="mx-2 float-left fw-bold h4">Choose your music streaming platform</span>
-        <div class="mx-2 my-2 h-line-thick"></div>
-        <div class="w-100 mt-5 d-flex flex-column justify-content-between" style="min-height: 400px;">
-          <div class="mx-auto w-50">
-            <button class="text-white py-5 w-100" mat-raised-button id="apple-button" (click)="appleButtonPress()">
+        <div class="mx-1 mb-2 h-line"></div>
+        <div class="w-100 my-0 mx-1 label-font-light">Take a look at your top songs and artists</div>
+        <span class="mx-1 float-left fw-bold label-text-bold">Choose your music streaming platform</span>
+        <div class="mx-1 my-2 h-line-thick"></div>
+        <div class="w-100 mt-5 mx-auto d-flex flex-column justify-content-between" style="min-height: 400px;">
+          <div class="w-100 d-flex justify-content-center">
+            <button class="w-50 text-white py-5" mat-raised-button id="apple-button" (click)="appleButtonPress()">
               <i class="mr-auto fab fa-apple fa-3x"></i>
               <span class="ms-2 h1">Music</span>
             </button>
           </div>
-          <div class="mx-auto w-50">
-            <button class="w-100 text-white py-5 w-100" mat-raised-button id="spotify-button" (click)="spotifyButtonPress()">
+          <div class="w-100 d-flex justify-content-center">
+            <button class="w-50 text-white py-5 " mat-raised-button id="spotify-button" (click)="spotifyButtonPress()">
               <a href="http://localhost:8080/spotify/login" style="text-decoration: none; color: inherit;">
                 <i class="mr-auto fab fa-spotify fa-3x"></i>
-                <span class="ms-2 h1">Spotify</span>
+                <span class="ms-1 h1">Spotify</span>
               </a>
             </button>
           </div>
-          <div class="mx-auto w-50">
-            <button class="text-white py-5 w-100" mat-raised-button id="lastfm-button" (click)="lastfmButtonPress()">
+          <div class="w-100 d-flex justify-content-center">
+            <button class="w-50 text-white py-5" mat-raised-button id="lastfm-button" (click)="lastfmButtonPress()">
               <span class="fw-bold" style="font-family: Raleway, serif; font-size: 2.75em;">l</span>
               <i class="mr-auto fab fa-lastfm" style="font-size: 3.4em; transform: translateY(0.1em)"></i>
               <span class="fw-bold" style="font-family: Raleway, serif; font-size: 2.75em;">t.fm</span>
@@ -38,39 +38,39 @@
           <div class="row mx-auto mt-5 p-2 w-50" id="label-short">
             <div class="label-border">
               <div class="w-100 text-center fw-bolder label-title">Musition Facts</div>
-              <div class="mx-2 mb-2 h-line"></div>
-              <div class="w-100 my-0 mx-2 h4 label-font-light">Learn more about your Spotify activity</div>
-              <span class="mx-2 float-left fw-bold h1">Choose your stats</span>
-              <div class="mx-2 my-2 h-line-thick"></div>
-              <div class="w-100 mx-2 mt-3 h5 label-font-light">
+              <div class="mx-1 mb-2 h-line"></div>
+              <div class="w-100 my-0 mx-1 h4 label-font-light">Learn more about your Spotify activity</div>
+              <span class="mx-1 float-left fw-bold h1">Choose your stats</span>
+              <div class="mx-1 my-2 h-line-thick"></div>
+              <div class="w-100 mx-1 mt-3 h5 label-font-light">
                 Show your top...
               </div>
-              <mat-button-toggle-group class="mx-2 mt-2 mb-4 d-flex justify-content-center" [value]="selectedType">
+              <mat-button-toggle-group class="mx-1 mt-2 mb-4 d-flex justify-content-center" [value]="selectedType">
                 <mat-button-toggle class="w-100 px-auto" value="tracks" (click)="setType('tracks')">Songs</mat-button-toggle>
                 <mat-button-toggle class="w-100 px-auto" value="artists" (click)="setType('artists')">Artists</mat-button-toggle>
                 <mat-button-toggle class="w-100 px-auto" value="genres" (click)="setType('genres')">Genres</mat-button-toggle>
                 <mat-button-toggle class="w-100 px-auto" value="albums" (click)="setType('albums')">Albums</mat-button-toggle>
               </mat-button-toggle-group>
-              <div class="w-100 mx-2 mt-3 h5 label-font-light">
+              <div class="w-100 mx-1 mt-3 h5 label-font-light">
                 ...over the last...
               </div>
-              <mat-button-toggle-group class="mx-2 mt-2 mb-4 d-flex justify-content-center" [value]="selectedTimeRange">
+              <mat-button-toggle-group class="mx-1 mt-2 mb-4 d-flex justify-content-center" [value]="selectedTimeRange">
                 <mat-button-toggle class="w-100 px-auto" value="short_term" (click)="setTimeRange('short_term')">Month</mat-button-toggle>
                 <mat-button-toggle class="w-100 px-auto" value="medium_term" (click)="setTimeRange('medium_term')">6 Months</mat-button-toggle>
                 <mat-button-toggle class="w-100 px-auto" value="long_term" (click)="setTimeRange('long_term')">All Time</mat-button-toggle>
               </mat-button-toggle-group>
               <div *ngIf="selectedType=='tracks' || selectedType=='artists'">
-                <div class="w-100 mx-2 mt-3 h5 label-font-light">
+                <div class="w-100 mx-1 mt-3 h5 label-font-light">
                   ...limited to the...
                 </div>
-                <mat-button-toggle-group class="mx-2 mt-2 mb-4 d-flex justify-content-center" [value]="selectedQuantity">
+                <mat-button-toggle-group class="mx-1 mt-2 mb-4 d-flex justify-content-center" [value]="selectedQuantity">
                   <mat-button-toggle class="w-100 px-auto" value="10" (click)="setQuantity('10')">Top 10</mat-button-toggle>
                   <mat-button-toggle class="w-100 px-auto" value="25" (click)="setQuantity('25')">Top 25</mat-button-toggle>
                   <mat-button-toggle class="w-100 px-auto" value="50" (click)="setQuantity('50')">Top 50</mat-button-toggle>
                 </mat-button-toggle-group>
               </div>
               <div class="px-2">
-                <button class="py-4 w-100 bg-white btn btn-primary text-black fw-bold label-font" data-toggle="button" aria-pressed="false" id="calculate-spotify" (click)="sendSpotifyRequest()">
+                <button class="py-4 w-100 bg-white btn btn-primary text-black fw-bold label-font" data-toggle="button" aria-pressed="false" id="calculate-spotify" (click)="sendSpotifyRequest()" style="font-size: calc(15px + 1vw);">
                   Calculate my Musition Facts.
                 </button>
               </div>
@@ -90,35 +90,33 @@
         <div class="row mx-auto mt-5 p-2 w-50" id="spotify-label">
           <div class="label-border">
             <div class="w-100 text-center fw-bold label-title">Musition Facts</div>
-            <div class="mx-2 mb-2 h-line"></div>
-            <div class="w-100 my-0 mx-2 h4 label-font-light">{{ response.length - 1 }} servings per list</div>
+            <div class="mx-1 mb-2 h-line"></div>
+            <div class="w-100 my-0 mx-1 h4 label-font-light">{{ response.length - 1 }} serving{{ (response.length - 1) > 1 ? "s" : "" }} per list</div>
             <div class="d-flex justify-content-between">
-              <span class="mx-2 float-left fw-bold h4">Serving size</span>
-              <span class="mr-2 float-right fw-bold h4">1 {{ response[0][2].substring(0, response[0][2].length - 1) }} (55g)</span>
+              <span class="mx-1 float-left fw-bold h4">Serving size</span>
+              <span class="mr-1 float-right fw-bold h4">1 {{ response[0][2].substring(0, response[0][2].length - 1) }} (55g)</span>
             </div>
-            <div class="mx-2 my-2 h-line-thick"></div>
-            <div class="w-auto ms-2 d-inline-block fw-bold h4 float-start">{{ response[0][1] }}'{{ response[0][1][response[0][1].length - 1] == "s" ? "" : "s"}} top {{ response[0][2] }}&nbsp;</div>
-            <div class="d-flex flex-row justify-content-between">
-              <span class="fw-bold h4 float-start" *ngIf="selectedTimeRange =='long_term'; else shortMediumTerm"> of:</span>
-            </div>
+            <div class="mx-1 mb-2 h-line-thick"></div>
+            <div class="w-auto ms-1 d-inline-block fw-bold h5 float-start top-line-large">{{ response[0][1] }}'{{ response[0][1][response[0][1].length - 1] == "s" ? "" : "s"}} top {{ response[0][2] }}&nbsp;</div>
+            <div class="fw-bold h5 float-start" *ngIf="selectedTimeRange =='long_term'; else shortMediumTerm"> of:</div>
             <ng-template #shortMediumTerm>
-              <span class="fw-bold h4"> of the last:</span>
+              <span class="fw-bold h5"> of the last:</span>
             </ng-template>
-            <div class="w-100 mx-2 d-flex justify-content-between">
-              <span class="h1 float-left fw-bold label-font-heavy" style="width: 35%;">{{ response[0][3] }}</span>
-              <span class="h5 me-3 py-2 mt-2 float-right fw-bold" id="date">{{ dateString }}</span>
-            </div>
-            <div class="mx-2 h-line-medium" ></div>
-            <div class="me-2 my-2 d-flex justify-content-end h5 fw-bold label-font">% Daily Value *</div>
-            <div class="mx-2 mb-2 h-line"></div>
-            <div class="mx-2 label-font-heavy fw-bold h5" *ngFor="let item of response.slice(1); let i = index">
+<!--            <div class="w-100 mx-1 d-flex justify-content-between">-->
+<!--              <span class="fw-bold label-font-heavy" style="font-size: calc(18px + 1vw);">{{ response[0][3] }}</span>-->
+<!--              <span class="me-2 py-2 fw-bold" id="date" style="font-size: calc(10px + 0.9vw);">{{ dateString }}</span>-->
+<!--            </div>-->
+            <div class="mx-1 h-line-medium" ></div>
+            <div class="me-1 my-2 d-flex justify-content-end h5 fw-bold label-font">% Daily Value *</div>
+            <div class="mx-1 mb-2 h-line"></div>
+            <div class="mx-1 label-font-heavy fw-bold h5" *ngFor="let item of response.slice(1); let i = index">
               <a href="{{ item[5] }}" target="_blank" style="text-decoration: none; color: inherit;">{{ item[0] }}</a>
               <div *ngIf="i < (response.length - 2)" class="mt-1 mb-2 h-line"></div>
             </div>
-            <div class="mx-2 my-2 h-line-medium"></div>
-            <div class="mb-2 ms-2">
+            <div class="mx-1 my-2 h-line-medium"></div>
+            <div class="mb-2 ms-1">
               <i class="fab fa-spotify fa-2x"></i>
-              <span class="ms-2 h3 label-font fw-bold">Spotify</span>
+              <span class="ms-1 h3 label-font fw-bold">Spotify</span>
             </div>
           </div>
         </div>
