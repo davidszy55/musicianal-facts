@@ -28,8 +28,8 @@ let generateRandomString = function (length) {
 // ######                   SPOTIFY                      ######
 // ############################################################
 
-const clientId = "5fa6e9839828408c8227c729454e8172";
-const clientSecret = "1e93748a24554f9586060bbe603b4915";
+const clientId = "CLIENT_ID";
+const clientSecret = "CLIENT_SECRET";
 const REDIRECT_URI = 'http://localhost:4200';
 const SCOPES = ["user-read-private", "user-read-email", "user-top-read"];
 let state = generateRandomString(16);
