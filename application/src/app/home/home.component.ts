@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {DataService} from "../data.service";
-import {ProxyService} from "../proxy.service";
-import {Router} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { DataService } from "../data.service";
+import { ProxyService } from "../proxy.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -105,6 +105,7 @@ export class HomeComponent implements OnInit {
   spotifyButtonPress(): void {
     this.spotifyIsSelected = true;
     this.response = [];
+    //this.proxyService.spotifyLogin();
   };
 
   getSuffix(num: string): string {

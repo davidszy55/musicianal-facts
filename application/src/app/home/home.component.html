@@ -91,7 +91,7 @@
           <div class="label-border">
             <div class="w-100 text-center fw-bold label-title">Musition Facts</div>
             <div class="mx-1 mb-2 h-line"></div>
-            <div class="w-100 my-0 mx-1 h4 label-font-light">{{ response.length - 1 }} serving{{ (response.length - 1) > 1 ? "s" : "" }} per list</div>
+            <div class="w-100 my-0 mx-1 h4 label-font-light">{{ response.length - 1 }} {{ response[0][2] }}{{ (response.length - 1) > 1 ? response[0][2] : response[0][2].substring(0, -1) }} per list</div>
             <div class="d-flex justify-content-between">
               <span class="mx-1 float-left fw-bold h4">Serving size</span>
               <span class="mr-1 float-right fw-bold h4">1 {{ response[0][2].substring(0, response[0][2].length - 1) }} (55g)</span>
@@ -100,12 +100,12 @@
             <div class="w-auto ms-1 d-inline-block fw-bold h5 float-start top-line-large">{{ response[0][1] }}'{{ response[0][1][response[0][1].length - 1] == "s" ? "" : "s"}} top {{ response[0][2] }}&nbsp;</div>
             <div class="fw-bold h5 float-start" *ngIf="selectedTimeRange =='long_term'; else shortMediumTerm"> of:</div>
             <ng-template #shortMediumTerm>
-              <span class="fw-bold h5"> of the last:</span>
+              <span class="fw-bold h5"> of the past:</span>
             </ng-template>
-<!--            <div class="w-100 mx-1 d-flex justify-content-between">-->
-<!--              <span class="fw-bold label-font-heavy" style="font-size: calc(18px + 1vw);">{{ response[0][3] }}</span>-->
-<!--              <span class="me-2 py-2 fw-bold" id="date" style="font-size: calc(10px + 0.9vw);">{{ dateString }}</span>-->
-<!--            </div>-->
+            <div class="w-100 mx-1 d-flex justify-content-between">
+              <span class="fw-bold label-font-heavy" style="font-size: calc(18px + 1vw);">{{ response[0][3] }}</span>
+              <span class="me-2 py-2 fw-bold" id="date" style="font-size: calc(10px + 0.9vw);">{{ dateString }}</span>
+            </div>
             <div class="mx-1 h-line-medium" ></div>
             <div class="me-1 my-2 d-flex justify-content-end h5 fw-bold label-font">% Daily Value *</div>
             <div class="mx-1 mb-2 h-line"></div>

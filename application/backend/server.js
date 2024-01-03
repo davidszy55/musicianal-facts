@@ -28,8 +28,8 @@ let generateRandomString = function (length) {
 // ######                   SPOTIFY                      ######
 // ############################################################
 
-const clientId = "CLIENT_ID";
-const clientSecret = "CLIENT_SECRET";
+const clientId = "5fa6e9839828408c8227c729454e8172";
+const clientSecret = "1e93748a24554f9586060bbe603b4915";
 const REDIRECT_URI = 'http://localhost:4200';
 const SCOPES = ["user-read-private", "user-read-email", "user-top-read"];
 let state = generateRandomString(16);
@@ -47,8 +47,9 @@ let authorizeURL = spotifyApi.createAuthorizeURL(
 );
 
 // Request authorization from user
-app.get("/spotify/login", (req, res) => {
+app.get("/spotify/login", (_, res) => {
   console.log("Inside Spotify Login");
+  console.log(`Authorize URL: ${authorizeURL}`);
   res.redirect(authorizeURL);
 });
 
@@ -58,7 +59,8 @@ app.get("/spotify/top/:type/:timeRange/:quantity?", async (req, res) => {
   let quantity = (req.params["quantity"]) ? req.params["quantity"] : null;
 
   if (type === "tracks") {
-      spotifyGetTopTracks(timeRange, quantity);
+    let topTracks = await spotifyGetTopTracks(timeRange, quantity);
+    res.send(topTracks);
   }
   if (type === "artists") {
       let [topArtists, username] = await Promise.all([spotifyGetTopArtists(timeRange, quantity), spotifyGetUsername()]);
@@ -115,9 +117,9 @@ function spotifyGetTopArtists(timeRange, quantity) {
         offset: 0
     };
 
-    return new Promise((resolve) => {
+  return new Promise((resolve) => {
         spotifyApi.getMyTopArtists(options)
-            .then(function(data) {
+          .then(function (data) {
                 topArtists = data.body.items;
                 topArtists.forEach((artist) => {
                     results[artist.name] = {
@@ -137,7 +139,19 @@ function spotifyGetTopArtists(timeRange, quantity) {
 }
 
 function spotifyGetTopTracks(timeRange, quantity, isGenre = false, isAlbums = false) {
-
+  console.log("here1");
+  return new Promise((resolve) => {
+    spotifyApi.getMyTopTracks()
+      .then(function (data) {
+        console.log("here2");
+        let topTracks = data.body.items;
+        console.log("Top tracks response: ");
+        console.log(topTracks);
+        resolve(topTracks);
+      }, function (err) {
+        console.log("An error occurred in spotifyGetTopTracks.", err);
+      });
+  });
 }
 
 function spotifyGetUsername() {
