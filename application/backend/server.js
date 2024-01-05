@@ -9,7 +9,7 @@ app.use(bodyParser.json())
   .use(cors())
   .use(cookieParser());
 
-const server = app.listen(process.env.PORT || 8080, function() {
+const server = app.listen(process.env["PORT"] || 8080, function() {
   console.log("Node.js back-end server is now running on localhost:" + server.address()["port"]);
 })
 
@@ -59,7 +59,8 @@ app.get("/spotify/top/:type/:timeRange/:quantity?", async (req, res) => {
   let quantity = (req.params["quantity"]) ? req.params["quantity"] : null;
 
   if (type === "tracks") {
-    let topTracks = await spotifyGetTopTracks(timeRange, quantity);
+    let [topTracks, username] = await Promise.all([spotifyGetTopTracks(timeRange, quantity), spotifyGetUsername()]);
+    topTracks["username"] = username["body"]["display_name"];
     res.send(topTracks);
   }
   if (type === "artists") {
