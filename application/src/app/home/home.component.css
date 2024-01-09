@@ -48,10 +48,10 @@ body {
  }
 .label-font-light {
   font-family: 'Helvetica Light', sans-serif;
-  font-size: calc(16px + 0.25vw);
+  font-size: calc(16px + 0.1vw);
 }
 .label-text-bold {
-  font-size: calc(14px + 0.5vw);
+  font-size: calc(14px + 0.3vw);
 }
 .label-title {
   font-family: "Helvetica", sans-serif;

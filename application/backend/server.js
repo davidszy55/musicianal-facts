@@ -60,7 +60,7 @@ app.get("/spotify/top/:type/:timeRange/:quantity?", async (req, res) => {
 
   if (type === "tracks") {
     let [topTracks, username] = await Promise.all([spotifyGetTopTracks(timeRange, quantity), spotifyGetUsername()]);
-    topTracks["username"] = username["body"]["display_name"];
+    topTracks.username = username["body"]["display_name"];
     res.send(topTracks);
   }
   if (type === "artists") {
@@ -119,36 +119,62 @@ function spotifyGetTopArtists(timeRange, quantity) {
     };
 
   return new Promise((resolve) => {
-        spotifyApi.getMyTopArtists(options)
-          .then(function (data) {
-                topArtists = data.body.items;
-                topArtists.forEach((artist) => {
-                    results[artist.name] = {
-                        name: artist.name,
-                        popularity: artist.popularity,
-                        genres: artist.genres,
-                        uri: artist.uri,
-                        id: artist.id,
-                        url: artist["external_urls"].spotify
-                    };
-                });
-                resolve(results);
-            }, function(err) {
-                console.log("An error occurred in spotifyGetTopArtists.", err);
-            });
+    spotifyApi.getMyTopArtists(options)
+      .then(function (data) {
+        topArtists = data.body.items;
+        topArtists.forEach((artist) => {
+          results[artist.name] = {
+            name: artist.name,
+            popularity: artist.popularity,
+            genres: artist.genres,
+            uri: artist.uri,
+            id: artist.id,
+            url: artist["external_urls"].spotify
+          };
+        });
+        resolve(results);
+        }, function(err) {
+            console.log("An error occurred in spotifyGetTopArtists.", err);
+        });
     });
 }
 
 function spotifyGetTopTracks(timeRange, quantity, isGenre = false, isAlbums = false) {
-  console.log("here1");
+  let topTracks;
+  let results = {};
+  let options = {
+    time_range: timeRange,
+    limit: quantity
+  };
+
   return new Promise((resolve) => {
-    spotifyApi.getMyTopTracks()
+    spotifyApi.getMyTopTracks(options)
       .then(function (data) {
-        console.log("here2");
-        let topTracks = data.body.items;
-        console.log("Top tracks response: ");
-        console.log(topTracks);
-        resolve(topTracks);
+        topTracks = data.body.items;
+        topTracks.forEach((track) => {
+          let tmp = {};
+          track["artists"].forEach((artist) => {
+              tmp[artist.name] = {
+              name: artist.name,
+              uri: artist.uri,
+              id: artist.id,
+              href: artist.href,
+              spotify_url: artist["external_urls"].spotify,
+            };
+          });
+          results[track.name] = {
+            name: track.name,
+            popularity: track.popularity,
+            uri: track.uri,
+            artist: tmp,
+            duration: track.duration_ms,
+            url: track["external_urls"].spotify,
+            href: track.href,
+            id: track.id,
+            preview: track["preview_url"]
+          };
+        });
+        resolve(results);
       }, function (err) {
         console.log("An error occurred in spotifyGetTopTracks.", err);
       });

@@ -91,12 +91,7 @@
           <div class="label-border">
             <div class="w-100 text-center fw-bold label-title">Musition Facts</div>
             <div class="mx-1 mb-2 h-line"></div>
-            <div class="w-100 my-0 mx-1 h4 label-font-light">{{ response.length - 1 }} {{ (response.length - 1) > 1 ? response[0][2] : response[0][2].substring(0, -1) }} per list</div>
-            <div class="d-flex justify-content-between">
-              <span class="mx-1 float-left fw-bold h4">Serving size</span>
-              <span class="mr-1 float-right fw-bold h4">1 {{ response[0][2].substring(0, response[0][2].length - 1) }} (55g)</span>
-            </div>
-            <div class="mx-1 mb-2 h-line-thick"></div>
+<!--            <div class="w-100 my-1 mx-1 h5 text-secondary fw-bold">{{ response.length - 1 }} {{ (response.length - 1) > 1 ? response[0][2] : response[0][2].substring(0, -1) }} per list</div>-->
             <div class="w-auto ms-1 d-inline-block fw-bold h5 float-start top-line-large">{{ response[0][1] }}'{{ response[0][1][response[0][1].length - 1] == "s" ? "" : "s"}} top {{ response[0][2] }}&nbsp;</div>
             <div class="fw-bold h5 float-start" *ngIf="selectedTimeRange =='long_term'; else shortMediumTerm"> of:</div>
             <ng-template #shortMediumTerm>
@@ -104,20 +99,54 @@
             </ng-template>
             <div class="w-100 mx-1 d-flex justify-content-between">
               <span class="fw-bold label-font-heavy" style="font-size: calc(18px + 1vw);">{{ response[0][3] }}</span>
-              <span class="me-2 py-2 fw-bold" id="date" style="font-size: calc(10px + 0.9vw);">{{ dateString }}</span>
+              <span class="me-2 py-2 fw-bold" id="date" style="font-size: calc(10px + 0.9vw);">{{ dateStringAlt }}</span>
+<!--              <span class="me-2 py-2 fw-bold" id="date" style="font-size: calc(10px + 0.9vw);">{{ dateString }}</span>-->
             </div>
-            <div class="mx-1 h-line-medium" ></div>
-            <div class="me-1 my-2 d-flex justify-content-end h5 fw-bold label-font">% Daily Value *</div>
-            <div class="mx-1 mb-2 h-line"></div>
-            <div class="mx-1 label-font-heavy fw-bold h5" *ngFor="let item of response.slice(1); let i = index">
-              <a href="{{ item[5] }}" target="_blank" style="text-decoration: none; color: inherit;">{{ item[0] }}</a>
-              <div *ngIf="i < (response.length - 2)" class="mt-1 mb-2 h-line"></div>
-            </div>
-            <div class="mx-1 my-2 h-line-medium"></div>
-            <div class="mb-2 ms-1">
-              <i class="fab fa-spotify fa-2x"></i>
-              <span class="ms-1 h3 label-font fw-bold">Spotify</span>
-            </div>
+            <div class="mx-1 mb-2 h-line-thick"></div>
+<!--            <div class="me-1 my-2 d-flex justify-content-end h5 fw-bold label-font">% Daily Value *</div>-->
+            <ng-container *ngIf="selectedType=='artists'; else other">
+              <div class="mx-1 label-font-heavy fw-bold h5" *ngFor="let item of response.slice(1); let i = index">
+                <a href="{{ item[5] }}" target="_blank" style="text-decoration: none; color: inherit;">{{ item[0] }}</a>
+                <div *ngIf="i < (response.length - 2)" class="mt-1 mb-2 h-line"></div>
+              </div>
+              <div class="mx-1 my-2 h-line-medium"></div>
+              <div class="mb-2 ms-1">
+                <i class="fab fa-spotify fa-2x"></i>
+                <span class="ms-1 h3 label-font fw-bold">Spotify</span>
+              </div>
+            </ng-container>
+            <ng-template #other>
+              <div class="d-flex justify-content-between mx-1">
+                <div class="d-flex justify-content-start">
+                  <span class="fw-bold h5 me-2">#</span>
+                  <span class="fw-bold h5 ms-2">{{ response[0][2].substring(0, response[0][2].length - 1).charAt(0).toUpperCase() + response[0][2].substring(0, response[0][2].length - 1).slice(1) }} Name</span>
+                </div>
+                <div class="d-flex justify-content-end">
+                  <span class="fw-bold h5 me-2">Popularity</span>
+                  <span class="fw-bold h5 ms-2">Length</span>
+                </div>
+              </div>
+              <div class="mx-1 mb-2 h-line"></div>
+              <div class="mx-1 fw-bold h5" *ngFor="let item of response.slice(1); let i = index">
+                <div class="d-flex justify-content-between mx-1">
+                  <div class="d-flex justify-content-start">
+                    <span class="fw-bold h5 me-2">{{ i + 1 }}</span>
+                    <a class="fw-bold h5 ms-2" href="{{ item[5] }}" target="_blank" style="text-decoration: none; color: inherit;">{{ item[0] }}</a>
+                  </div>
+                  <div class="d-flex justify-content-end">
+                    <span class="fw-bold h5 me-2">Popularity</span>
+                    <span class="fw-bold h5 ms-2">Length</span>
+                  </div>
+                </div>
+                <a href="{{ item[5] }}" target="_blank" style="text-decoration: none; color: inherit;">{{ item[0] }}</a>
+                <div *ngIf="i < (response.length - 2)" class="mt-1 mb-2 h-line"></div>
+              </div>
+              <div class="mx-1 my-2 h-line-medium"></div>
+              <div class="mb-2 ms-1">
+                <i class="fab fa-spotify fa-2x"></i>
+                <span class="ms-1 h3 label-font fw-bold">Spotify</span>
+              </div>
+            </ng-template>
           </div>
         </div>
       </ng-container>

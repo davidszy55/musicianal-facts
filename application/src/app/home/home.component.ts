@@ -71,6 +71,20 @@ export class HomeComponent implements OnInit {
     "November",
     "December"
   ];
+  monthsAlt: { [key: string]: number } = {
+    "January": 1,
+    "February": 2,
+    "March": 3,
+    "April": 4,
+    "May": 5,
+    "June": 6,
+    "July": 7,
+    "August": 8,
+    "September": 9,
+    "October": 10,
+    "November": 11,
+    "December": 12
+  };
 
   today: Date = new Date();
   month: string = this.months[this.today.getMonth()];
@@ -79,6 +93,7 @@ export class HomeComponent implements OnInit {
   date: string = String(this.today.getDate());
   suffix: string = this.getSuffix(this.date.charAt(this.date.length - 1));
   dateString: string = `${this.day}, ${this.month} ${this.date}${this.suffix}, ${this.year}`;
+  dateStringAlt: string = `${this.monthsAlt[this.month]}.${this.date}.${this.year}`;
 
   appleIsSelected: boolean = false;
   lastfmIsSelected: boolean = false;
@@ -123,7 +138,7 @@ export class HomeComponent implements OnInit {
     this.proxyService.sendSpotifyRequest(this.selectedType, this.selectedTimeRange, this.selectedQuantity).then((res: any): void => {
       let tmp: any[] = [];
       tmp.push(Object.keys(res).length.toString());
-      tmp.push(res["username"]);
+      console.log(res);
 
       if (this.selectedType == "tracks") {
         tmp.push("songs");
