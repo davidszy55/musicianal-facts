@@ -123,6 +123,14 @@ export class HomeComponent implements OnInit {
     //this.proxyService.spotifyLogin();
   };
 
+  convertDuration(milli: number): string {
+    let seconds = Math.floor((milli / 1000) % 60);
+    let minutes = Math.floor((milli / (60 * 1000)) % 60);
+    let res = minutes + ":" + seconds;
+
+    return (res.length == 3) ? res + "0" : res;
+  }
+
   getSuffix(num: string): string {
     const _: string[] = ["1", "2", "3"]
     const suffix: {[key: string]: string} = {
@@ -138,6 +146,7 @@ export class HomeComponent implements OnInit {
     this.proxyService.sendSpotifyRequest(this.selectedType, this.selectedTimeRange, this.selectedQuantity).then((res: any): void => {
       let tmp: any[] = [];
       tmp.push(Object.keys(res).length.toString());
+      tmp.push(res.username);
       console.log(res);
 
       if (this.selectedType == "tracks") {
@@ -164,6 +173,24 @@ export class HomeComponent implements OnInit {
         }
         this.response.push(tmp);
       }
+
+      // let i: number = 0;
+      // for (let row of this.response.slice(1)) {
+      //   console.log("###########################");
+      //   console.log(i);
+      //   console.log(row);
+      //   console.log(row[3]);
+      //   console.log(Object.keys(row[3]));
+      //   // @ts-ignore
+      //   console.log(Object.keys(row[3])[0]); // artists
+      //   // @ts-ignore
+      //   console.log(row[3][Object.keys(row[3])[0]]);
+      //   // @ts-ignore
+      //   console.log((row[3][Object.keys(row[3])[0]]).name);
+      //   i++;
+      // }
+
+
       this.ready = true;
       console.log("Response: ");
       console.log(this.response);
@@ -181,4 +208,6 @@ export class HomeComponent implements OnInit {
   setType(type: string): void {
     this.selectedType = type;
   };
+
+  protected readonly Object = Object;
 }

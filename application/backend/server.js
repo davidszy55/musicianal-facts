@@ -154,7 +154,7 @@ function spotifyGetTopTracks(timeRange, quantity, isGenre = false, isAlbums = fa
         topTracks.forEach((track) => {
           let tmp = {};
           track["artists"].forEach((artist) => {
-              tmp[artist.name] = {
+              tmp.artists = {
               name: artist.name,
               uri: artist.uri,
               id: artist.id,

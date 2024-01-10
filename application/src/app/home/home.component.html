@@ -130,15 +130,23 @@
               <div class="mx-1 fw-bold h5" *ngFor="let item of response.slice(1); let i = index">
                 <div class="d-flex justify-content-between mx-1">
                   <div class="d-flex justify-content-start">
-                    <span class="fw-bold h5 me-2">{{ i + 1 }}</span>
-                    <a class="fw-bold h5 ms-2" href="{{ item[5] }}" target="_blank" style="text-decoration: none; color: inherit;">{{ item[0] }}</a>
+                    <span class="h5 me-2">{{ i + 1 }}</span>
+                    <a class="fw-bold h5 ms-2" href="{{ item[5] }}" target="_blank" style="text-decoration: none; color: inherit;">{{ item[0].length > 18 ? item[0].slice(0, 18 - 1) + '&hellip;' : item[0] }}</a>
                   </div>
                   <div class="d-flex justify-content-end">
-                    <span class="fw-bold h5 me-2">Popularity</span>
-                    <span class="fw-bold h5 ms-2">Length</span>
+                    <span class="h5 me-2">{{ item[1] }}</span>
+                    <span class="h5 ms-2">{{ convertDuration(item[4]) }}</span>
                   </div>
                 </div>
-                <a href="{{ item[5] }}" target="_blank" style="text-decoration: none; color: inherit;">{{ item[0] }}</a>
+                <div class="row">
+                  <div class="col-sm-1"></div>
+                  <div class="col-sm-2 h5">asdasds</div>
+                  <div class="col-sm"></div>
+                </div>
+
+<!--                <div *ngFor="let artist of item[3]; let i = index">-->
+<!--                  <a href="{{ item[5] }}" target="_blank" style="text-decoration: none; color: inherit;">PEE{{ (artist[3][Object.keys(artist[3])[0]]).name }}</a>-->
+<!--                </div>-->
                 <div *ngIf="i < (response.length - 2)" class="mt-1 mb-2 h-line"></div>
               </div>
               <div class="mx-1 my-2 h-line-medium"></div>
